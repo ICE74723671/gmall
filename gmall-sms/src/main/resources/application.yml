@@ -1,0 +1,12 @@
+server:
+  port: 18082
+mybatis-plus:
+  mapper-locations: classpath:mapper/sms/**/*.xml
+  type-aliases-package: com.atguigu.gmall.sms.entity
+  configuration:
+    global-config:
+      db-config:
+        id-type: auto
+feign:
+  sentinel:
+    enabled: true

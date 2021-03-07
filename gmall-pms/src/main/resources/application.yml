@@ -1,0 +1,12 @@
+server:
+  port: 18081
+mybatis-plus:
+  mapper-locations: classpath:mapper/pms/**/*.xml
+  type-aliases-package: com.atguigu.gmall.pms.entity
+  configuration:
+    global-config:
+      db-config:
+        id-type: auto
+feign:
+  sentinel:
+    enabled: true
