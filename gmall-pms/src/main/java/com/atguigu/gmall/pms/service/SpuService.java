@@ -5,6 +5,7 @@ import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.pms.entity.SpuEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,5 +18,7 @@ import java.util.Map;
 public interface SpuService extends IService<SpuEntity> {
 
     PageResultVo queryPage(PageParamVo paramVo);
+
+    PageResultVo querySupEntitiesByCatId(PageParamVo pageParamVo, Long catId);
 }
 
