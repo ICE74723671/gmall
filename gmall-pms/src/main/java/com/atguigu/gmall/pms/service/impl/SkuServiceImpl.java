@@ -1,7 +1,11 @@
 package com.atguigu.gmall.pms.service.impl;
 
+import com.atguigu.gmall.pms.vo.SkuVo;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,5 +29,11 @@ public class SkuServiceImpl extends ServiceImpl<SkuMapper, SkuEntity> implements
 
         return new PageResultVo(page);
     }
+
+    @Override
+    public List<SkuEntity> querySkuEntitiesBySpuId(Long spuId) {
+        return this.list(new QueryWrapper<SkuEntity>().eq("spu_id", spuId));
+    }
+
 
 }

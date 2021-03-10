@@ -34,4 +34,19 @@ public class AttrServiceImpl extends ServiceImpl<AttrMapper, AttrEntity> impleme
         return this.list(new QueryWrapper<AttrEntity>().eq("group_id", gid));
     }
 
+    @Override
+    public List<AttrEntity> queryAttrsByCidOrTypeOrSearch(Long cid, Integer type, Integer searchType) {
+        QueryWrapper<AttrEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("category_id", cid);
+
+        if (type != null) {
+            queryWrapper.eq("type", type);
+        }
+
+        if (searchType != null) {
+            queryWrapper.eq("search_type", searchType);
+        }
+        return this.list(queryWrapper);
+    }
+
 }

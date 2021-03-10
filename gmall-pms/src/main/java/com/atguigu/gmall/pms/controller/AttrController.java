@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,8 @@ import com.atguigu.gmall.common.bean.PageResultVo;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.common.bean.PageParamVo;
 
+import javax.websocket.server.PathParam;
+
 /**
  * 商品属性
  *
@@ -33,6 +36,15 @@ public class AttrController {
 
     @Autowired
     private AttrService attrService;
+
+    @GetMapping("category/{cid}")
+    public ResponseVo<List<AttrEntity>> queryAttrsByCidOrTypeOrSearch(@PathVariable("cid") Long cid,
+                                                                      @RequestParam(value = "type", required = false) Integer type,
+                                                                      @RequestParam(value = "searchType", required = false) Integer searchType
+    ) {
+        List<AttrEntity> attrEntityList = attrService.queryAttrsByCidOrTypeOrSearch(cid, type, searchType);
+        return ResponseVo.ok(attrEntityList);
+    }
 
     @GetMapping("group/{gid}")
     public ResponseVo<List<AttrEntity>> queryAttrEntitiesByGid(@PathVariable("gid") Long gid) {

@@ -35,6 +35,11 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    /**
+     * 查询组下的参数规格
+     * @param catId
+     * @return
+     */
     @GetMapping("withattrs/{catId}")
     public ResponseVo<List<AttrGroupEntity>> queryAttrGroupEntitiesAndAttr(@PathVariable("catId") Long catId) {
         List<AttrGroupEntity> attrGroupEntityList = attrGroupService.queryAttrGroupEntitiesAndAttr(catId);
