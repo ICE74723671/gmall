@@ -21,6 +21,7 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.sms.mapper.SkuBoundsMapper;
 import com.atguigu.gmall.sms.entity.SkuBoundsEntity;
 import com.atguigu.gmall.sms.service.SkuBoundsService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
@@ -46,6 +47,7 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsMapper, SkuBounds
         return new PageResultVo(page);
     }
 
+    @Transactional
     @Override
     public void saveSkuSale(SkuSaleVo skuSaleVo) {
 //          1.保存sku_bounds
@@ -53,7 +55,7 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsMapper, SkuBounds
         BeanUtils.copyProperties(skuSaleVo, skuBoundsEntity);
         List<Integer> works = skuSaleVo.getWork();
         if (!CollectionUtils.isEmpty(works)) {
-            //四个状态位从右往左，以十进制保存，使用时解析为二进制
+//            四个状态位从右往左，以十进制保存，使用时解析为二进制
             skuBoundsEntity.setWork(works.get(3) * 8 + works.get(2) * 4 + works.get(1) * 2 + works.get(0));
         }
         skuBoundsMapper.insert(skuBoundsEntity);
@@ -69,6 +71,7 @@ public class SkuBoundsServiceImpl extends ServiceImpl<SkuBoundsMapper, SkuBounds
         BeanUtils.copyProperties(skuSaleVo, skuLadderEntity);
         skuLadderEntity.setAddOther(skuSaleVo.getLadderAddOther());
         skuLadderMapper.insert(skuLadderEntity);
+
     }
 
 }
