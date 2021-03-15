@@ -38,9 +38,18 @@ public class SpuController {
     /**
      * 条件查询spu
      *
-     * @param pageParamVo
+     * @param
      * @return
      */
+
+    @PostMapping("page")
+    @ApiOperation("查询已上架的SPU信息")
+    public ResponseVo<List<SpuEntity>> querySpuPage(@RequestBody PageParamVo pageParamVo) {
+        PageResultVo page = spuService.queryPage(pageParamVo);
+        List<SpuEntity> list = (List<SpuEntity>) page.getList();
+        return ResponseVo.ok(list);
+    }
+
     @GetMapping("category/{categoryId}")
     public ResponseVo<PageResultVo> querySupEntitiesByCatId(PageParamVo pageParamVo, @PathVariable("categoryId") Long catId) {
         PageResultVo pageResultVoList = spuService.querySupEntitiesByCatId(pageParamVo, catId);
@@ -77,7 +86,6 @@ public class SpuController {
     @ApiOperation("保存")
     public ResponseVo<Object> save(@RequestBody SpuVo spu) {
         spuService.bigSave(spu);
-
         return ResponseVo.ok();
     }
 
