@@ -105,7 +105,7 @@ public class SearchService {
 
                     BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
                     boolQuery.must(QueryBuilders.termQuery("searchAttrs.attrId", attrId));
-                    boolQuery.must(QueryBuilders.termQuery("searchAttrs.attrValue", attrValues));
+                    boolQuery.must(QueryBuilders.termsQuery("searchAttrs.attrValue", attrValues));
 
                     boolQueryBuilder.filter(QueryBuilders.nestedQuery("searchAttrs", boolQuery, ScoreMode.None));
                 }
@@ -139,6 +139,7 @@ public class SearchService {
                 order = SortOrder.DESC;
                 break;
         }
+        sourceBuilder.sort(field, order);
 
         //3.构建分页
         Integer pageNum = paramVo.getPageNum();
