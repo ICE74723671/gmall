@@ -3,6 +3,7 @@ package com.atguigu.gmall.search.controller;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.search.pojo.SearchParamVo;
 import com.atguigu.gmall.search.service.SearchService;
+import com.atguigu.gmall.search.vo.SearchResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,7 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping
-    public ResponseVo<Object> search(SearchParamVo searchParamVo) {
-        searchService.search(searchParamVo);
-        return ResponseVo.ok();
+    public ResponseVo<SearchResponseVo> search(SearchParamVo searchParamVo) {
+        return ResponseVo.ok(searchService.search(searchParamVo));
     }
 }
