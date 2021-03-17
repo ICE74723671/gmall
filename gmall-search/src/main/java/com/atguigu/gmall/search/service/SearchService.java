@@ -259,7 +259,7 @@ public class SearchService {
                 order = SortOrder.DESC;
                 break;
             default:
-                field = "_source";
+                field = "_score";
                 order = SortOrder.DESC;
                 break;
         }
