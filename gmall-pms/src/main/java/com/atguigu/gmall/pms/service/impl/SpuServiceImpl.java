@@ -12,7 +12,10 @@ import com.atguigu.gmall.pms.vo.SpuAttrVo;
 import com.atguigu.gmall.pms.vo.SpuVo;
 import com.atguigu.gmall.sms.vo.SkuSaleVo;
 import io.seata.spring.annotation.GlobalTransactional;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +34,7 @@ import com.atguigu.gmall.pms.mapper.SpuMapper;
 import com.atguigu.gmall.pms.service.SpuService;
 import org.springframework.util.CollectionUtils;
 
-
+@Slf4j
 @Service("spuService")
 public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements SpuService {
 
@@ -52,6 +55,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
 
     @Autowired
     private GmallSmsClient gmallSmsClient;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @Override
     public PageResultVo queryPage(PageParamVo paramVo) {
@@ -164,6 +170,9 @@ public class SpuServiceImpl extends ServiceImpl<SpuMapper, SpuEntity> implements
                 gmallSmsClient.saveSkuSale(skuSaleVo);
             });
         }
+
+        System.out.println("调用大保存............................");
+        rabbitTemplate.convertAndSend("ITEM_EXCHANGE", "item.insert", supId);
 
     }
 

@@ -3,6 +3,7 @@ package com.atguigu.gmall.pms.api;
 import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.pms.entity.*;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,4 +41,13 @@ public interface GmallPmsApi {
     //查询sku规格参数
     @GetMapping("pms/skuattrvalue/sku/{skuId}")
     public ResponseVo<List<SkuAttrValueEntity>> querySearchAttrValueBySkuId(@PathVariable("skuId") Long skuId);
+
+    @GetMapping("pms/spu/{id}")
+    public ResponseVo<SpuEntity> querySpuById(@PathVariable("id") Long id);
+
+    @GetMapping("pms/category/parent/{parentId}")
+    public ResponseVo<List<CategoryEntity>> queryCategoriesById(@PathVariable("parentId") Long pid);
+
+    @GetMapping("pms/category/subs/{pid}")
+    public ResponseVo<List<CategoryEntity>> queryCategoriesWithSub(@PathVariable("pid") Long pid);
 }

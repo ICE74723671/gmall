@@ -237,18 +237,18 @@ public class SearchService {
         }
         sourceBuilder.query(boolQueryBuilder);
 
-        //2.构建排序 0-默认，得分降序；1-按价格升序；2-按价格降序；3-按创建时间降序；4-按销量降序
+        //2.构建排序 0-默认，得分降序；1-按价格降序；2-按价格升序；3-按创建时间降序；4-按销量降序
         Integer sort = paramVo.getSort();
         String field = "";
         SortOrder order = null;
         switch (sort) {
             case 1:
                 field = "price";
-                order = SortOrder.ASC;
+                order = SortOrder.DESC;
                 break;
             case 2:
                 field = "price";
-                order = SortOrder.DESC;
+                order = SortOrder.ASC;
                 break;
             case 3:
                 field = "createTime";
