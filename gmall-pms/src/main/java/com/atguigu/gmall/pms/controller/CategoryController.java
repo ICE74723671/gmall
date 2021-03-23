@@ -35,6 +35,17 @@ public class CategoryController {
     private CategoryService categoryService;
 
     /**
+     * 根据三级分类id查询一级二级分类
+     * @param cid3
+     * @return
+     */
+    @GetMapping("all/{cid3}")
+    public ResponseVo<List<CategoryEntity>> queryCategoriesByCid3(@PathVariable("cid3") Long cid3) {
+        List<CategoryEntity> categoryEntityList = categoryService.queryCategoriesByCid3(cid3);
+        return ResponseVo.ok(categoryEntityList);
+    }
+
+    /**
      * 查询子类列表
      *
      * @param pid

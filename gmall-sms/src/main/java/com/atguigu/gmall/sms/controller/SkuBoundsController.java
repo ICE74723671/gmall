@@ -2,6 +2,7 @@ package com.atguigu.gmall.sms.controller;
 
 import java.util.List;
 
+import com.atguigu.gmall.sms.vo.ItemSaleVo;
 import com.atguigu.gmall.sms.vo.SkuSaleVo;
 import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.Api;
@@ -35,6 +36,17 @@ public class SkuBoundsController {
 
     @Autowired
     private SkuBoundsService skuBoundsService;
+
+    /**
+     * 查询某一sku的营销信息
+     * @param skuId
+     * @return
+     */
+    @GetMapping("sku/{skuId}")
+    public ResponseVo<List<ItemSaleVo>> querySalesBySkuId(@PathVariable("skuId") Long skuId) {
+        List<ItemSaleVo> saleVos = skuBoundsService.querySalesBySkuId(skuId);
+        return ResponseVo.ok(saleVos);
+    }
 
     /**
      * 保存sku营销信息

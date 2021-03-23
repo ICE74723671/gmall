@@ -1,7 +1,10 @@
 package com.atguigu.gmall.pms.controller;
 
+import java.awt.geom.RectangularShape;
 import java.util.List;
 
+import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
+import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +36,31 @@ public class SkuAttrValueController {
 
     @Autowired
     private SkuAttrValueService skuAttrValueService;
+
+    /**
+     * 查询spu下sku及其销售属性的关系
+     *
+     * @param spuId
+     * @return
+     */
+    @GetMapping("spu/sku/{spuId}")
+    public ResponseVo<String> querySkusJsonBySpuId(@PathVariable("spuId") Long spuId) {
+        String skusJson = skuAttrValueService.querySkusJsonBySpuId(spuId);
+        return ResponseVo.ok(skusJson);
+    }
+
+    /**
+     * 查询某一spu下的所有sku销售属性
+     *
+     * @param spuId
+     * @return
+     */
+    @GetMapping("spu/{spuId}")
+    public ResponseVo<List<SaleAttrValueVo>> querySkuAttrValuesBySpuId(@PathVariable("spuId") Long spuId) {
+        List<SaleAttrValueVo> saleAttrValueVos = skuAttrValueService.querySkuAttrValuesBySpuId(spuId);
+        return ResponseVo.ok(saleAttrValueVos);
+    }
+
 
     /**
      * 列表

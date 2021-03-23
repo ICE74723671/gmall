@@ -2,6 +2,7 @@ package com.atguigu.gmall.pms.controller;
 
 import java.util.List;
 
+import com.atguigu.gmall.pms.vo.ItemGroupVo;
 import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,8 +36,19 @@ public class AttrGroupController {
     @Autowired
     private AttrGroupService attrGroupService;
 
+    @GetMapping("withattrvalues")
+    public ResponseVo<List<ItemGroupVo>> queryGroupsBySpuIdAndCid(
+            @RequestParam("spuId") Long spuId,
+            @RequestParam("skuId") Long skuId,
+            @RequestParam("cid") Long cid
+    ) {
+        List<ItemGroupVo> itemGroupVos = attrGroupService.queryGroupsBySpuIdAndCid(spuId, skuId, cid);
+        return ResponseVo.ok(itemGroupVos);
+    }
+
     /**
      * 查询组下的参数规格
+     *
      * @param catId
      * @return
      */

@@ -8,14 +8,17 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.KeyBoundCursor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +37,9 @@ public class GmallCacheAspect {
     @Autowired
     private RedissonClient redissonClient;
 
+    @Autowired
+    private RBloomFilter rBloomFilter;
+
     @Around("@annotation(com.atguigu.gmall.index.config.GmallCache)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         //获取切点的签名
@@ -49,6 +55,10 @@ public class GmallCacheAspect {
         String param = Arrays.asList(args).toString();
         //获取方法的返回值类型
         Class<?> returnType = method.getReturnType();
+
+        if (!rBloomFilter.contains(prefix + param)) {
+            return null;
+        }
 
         //拦截前代码块：判断是否有缓存
         String json = redisTemplate.opsForValue().get(prefix + param);
