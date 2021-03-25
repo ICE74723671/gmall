@@ -11,26 +11,19 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-/**
- * description:
- *
- * @author Ice on 2021/3/23 in 16:5 3
- */
 @Data
 public class ItemVo {
 
-    //三级分类
+    // 面包屑：一二三级分类 V
     private List<CategoryEntity> categories;
-
-    //品牌
+    // 面包屑：品牌信息 V
     private Long brandId;
     private String brandName;
-
-    //spu
+    // 面包屑：spu信息 V
     private Long spuId;
     private String spuName;
 
-    //sku
+    // sku相关信息 V
     private Long skuId;
     private String title;
     private String subTitle;
@@ -38,33 +31,27 @@ public class ItemVo {
     private Integer weight;
     private String defaultImage;
 
-    //sku图片
+    // 商品营销信息 V
+    private List<ItemSaleVo> sales;
+    // 是否有货 V
+    private Boolean store = false;
+    // 图片列表 V
     private List<SkuImagesEntity> images;
 
-    //营销信息
-    private List<ItemSaleVo> sales;
-
-    //是否有货
-    private Boolean store = false;
-
-    //sku所属spu下的所有sku销售属性
-    //[{attrId: 3, attrName: '颜色', attrValues: '白色','黑色','粉色'},
-    // {attrId: 8, attrName: '内存', attrValues: '6G','8G','12G'},
-    // {attrId: 9, attrName: '存储', attrValues: '128G','256G','512G'}]
+    // 销售属性列表 V：[{attrId: 3, attrName: 颜色, attrValues: ['黑色', '白色']},
+    // {attrId: 4, attrName: 内存, attrValues: ['8G', '12G']},
+    // {attrId: 5, attrName: 存储, attrValues: ['128G', '256G', '512G']}]
     private List<SaleAttrValueVo> saleAttrs;
 
-    //当前sku的销售属性
-    //{3:'白色',4:'8G',5:'128G'}
+    // 当前商品的销售属性JSON格式 V：{3: '黑色', 4: '8G', 5: '128G'}
     private Map<Long, String> saleAttr;
 
-    //sku列表
-    //{'白色,8G,128G': 4, '白色,8G,256G': 5, '白色,8G,512G': 6, '白色,12G,128G': 7}
+    // 销售属性组合和skuId的映射关系 V：['黑色,8G,128G': 10, '黑色,12G,256G': 11]
     private Map<String, Object> skuJsons;
 
-    //spu的海报信息
+    // 商品描述 V
     private List<String> spuImages;
 
-    //规格参数组及组下的规格参数
-    //需要cid,spuId，skuId 每个分类有多个规格，有些规格属于销售属性，有些属于基本属性，值在spu_attr_value和sku_attr_value中
+    // 规格参数
     private List<ItemGroupVo> groups;
 }

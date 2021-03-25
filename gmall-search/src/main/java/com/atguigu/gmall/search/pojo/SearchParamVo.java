@@ -1,35 +1,35 @@
 package com.atguigu.gmall.search.pojo;
 
-import io.swagger.models.auth.In;
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * description:
- *
- * @author Ice on 2021/3/15 in 21:05
+ * http://search.gmall.com/search?keyword=手机&brandId=1,2&cid=225&props=4:8G-12G&props=5:256G-512G&sort=1
+ *  &priceFrom=1000&priceTo=5000&store=true&pageNum=1
  */
 @Data
 public class SearchParamVo {
 
-    private String keyword; //搜索框中的搜索条件
+    // 搜索关键字
+    private String keyword;
+    // 品牌的过滤条件
+    private List<Long> brandId;
+    // 分类的过滤条件
+    private List<Long> cid;
+    // 规格参数的过滤条件: ["4:8G-12G", "5:256G-512G"]
+    private List<String> props;
+    // 排序字段：0或者默认-得分降序  1-价格降序 2-价格升序 3-新品降序 4-销量降序
+    private Integer sort;
 
-    private List<Long> brandId; //品牌id，可以多选要用集合
-
-    private Long cid; //分类id(手机)
-
-    private List<String> props; //规格参数检索
-
-    private Integer sort = 0; //排序字段：0-默认，得分降序；1-按价格升序；2-按价格降序；3-按创建时间降序；4-按销量降序
-
-    //价格区间
-    private Double priceForm;
+    // 价格区间过滤
+    private Double priceFrom;
     private Double priceTo;
 
-    private Integer pageNum = 1;//页数
+    // 是否有货
+    private Boolean store;
 
-    private final Integer pageSize = 20;//每页记录数，固定不改
-
-    private Boolean store;//是否有货
+    // 分页
+    private Integer pageNum = 1;
+    private final Integer pageSize = 20;
 }

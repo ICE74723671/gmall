@@ -10,14 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.List;
 
-/**
- * description:
- *
- * @author Ice on 2021/3/23 in 8:32
- */
 @Configuration
 public class BloomFilterConfig {
 
@@ -30,17 +24,17 @@ public class BloomFilterConfig {
     private static final String KEY_PREFIX = "index:cates:[";
 
     @Bean
-    public RBloomFilter rBloomFilter() {
-        RBloomFilter<String> bloomfilter = redissonClient.getBloomFilter("index:cates:bloom");
-        bloomfilter.tryInit(500L, 0.02);
+    public RBloomFilter bloomFilter(){
 
-        ResponseVo<List<CategoryEntity>> responseVo = pmsClient.queryCategoriesById(0L);
-        List<CategoryEntity> categoryEntities = responseVo.getData();
-        if (!CollectionUtils.isEmpty(categoryEntities)) {
+        RBloomFilter<Object> bloomFilter = this.redissonClient.getBloomFilter("index:bloom");
+        bloomFilter.tryInit(1000l, 0.03);
+        ResponseVo<List<CategoryEntity>> catesResponseVo = this.pmsClient.queryCategoriesById(0l);
+        List<CategoryEntity> categoryEntities = catesResponseVo.getData();
+        if (!CollectionUtils.isEmpty(categoryEntities)){
             categoryEntities.forEach(categoryEntity -> {
-                bloomfilter.add(KEY_PREFIX + categoryEntity.getId() + "]");
+                bloomFilter.add(KEY_PREFIX + categoryEntity.getId() + "]");
             });
         }
-        return bloomfilter;
+        return bloomFilter;
     }
 }

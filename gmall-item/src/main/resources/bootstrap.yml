@@ -1,7 +1,8 @@
 spring:
+  application:
+    name: item-service
   cloud:
     nacos:
       config:
         server-addr: localhost:8848
-  application:
-    name: item-service
+
