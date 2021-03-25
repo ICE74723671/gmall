@@ -12,10 +12,10 @@ import lombok.Data;
 
 /**
  * 属性分组
- * 
+ *
  * @author fengge
  * @email fengge@atguigu.com
- * @date 2021-03-07 10:50:50
+ * @date 2021-03-08 14:58:56
  */
 @Data
 @TableName("pms_attr_group")

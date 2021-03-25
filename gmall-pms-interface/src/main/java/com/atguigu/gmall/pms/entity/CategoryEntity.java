@@ -12,10 +12,10 @@ import lombok.Data;
 
 /**
  * 商品三级分类
- * 
+ *
  * @author fengge
  * @email fengge@atguigu.com
- * @date 2021-03-07 10:50:50
+ * @date 2021-03-08 14:58:56
  */
 @Data
 @TableName("pms_category")
@@ -54,5 +54,4 @@ public class CategoryEntity implements Serializable {
 
 	@TableField(exist = false)
 	private List<CategoryEntity> subs;
-
 }

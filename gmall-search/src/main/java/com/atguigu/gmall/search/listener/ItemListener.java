@@ -59,7 +59,7 @@ public class ItemListener {
         }
 
         // 如果spu不为空 查询sku并导入索引库
-        ResponseVo<List<SkuEntity>> skuResponseVo = this.pmsClient.querySkuEntitiesBySpuId(spuId);
+        ResponseVo<List<SkuEntity>> skuResponseVo = this.pmsClient.querySkusBySpuId(spuId);
         List<SkuEntity> skuEntities = skuResponseVo.getData();
         if (!CollectionUtils.isEmpty(skuEntities)){
 
@@ -104,7 +104,7 @@ public class ItemListener {
                 // 检索类型的规格参数
                 List<SearchAttrValueVo> searchAttrValueVos = new ArrayList<>();
                 //  1.查询销售类型的检索属性
-                ResponseVo<List<SkuAttrValueEntity>> skuAttrValueResponseVo = this.pmsClient.querySearchAttrValueBySkuId(skuEntity.getId());
+                ResponseVo<List<SkuAttrValueEntity>> skuAttrValueResponseVo = this.pmsClient.querySearchAttrValuesBySkuId(skuEntity.getCategoryId(), skuEntity.getId());
                 List<SkuAttrValueEntity> skuAttrValueEntities = skuAttrValueResponseVo.getData();
                 if (!CollectionUtils.isEmpty(skuAttrValueEntities)) {
                     searchAttrValueVos.addAll(skuAttrValueEntities.stream().map(skuAttrValueEntity -> {
@@ -114,7 +114,7 @@ public class ItemListener {
                     }).collect(Collectors.toList()));
                 }
                 //  2.查询基本类型的检索属性
-                ResponseVo<List<SpuAttrValueEntity>> spuAttrValueResponseVo = this.pmsClient.querySearchAttrValueBySpuId(spuEntity.getId());
+                ResponseVo<List<SpuAttrValueEntity>> spuAttrValueResponseVo = this.pmsClient.querySearchAttrValuesBySpuId(skuEntity.getCategoryId(), spuEntity.getId());
                 List<SpuAttrValueEntity> spuAttrValueEntities = spuAttrValueResponseVo.getData();
                 if (!CollectionUtils.isEmpty(spuAttrValueEntities)) {
                     searchAttrValueVos.addAll(spuAttrValueEntities.stream().map(spuAttrValueEntity -> {
