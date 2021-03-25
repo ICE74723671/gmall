@@ -5,6 +5,7 @@ import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
 import com.atguigu.gmall.sms.vo.AttrValueVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,5 @@ public interface SkuAttrValueMapper extends BaseMapper<SkuAttrValueEntity> {
 
     List<AttrValueVo> querySkuAttrValuesBySpuId(Long spuId);
 
-    List<Map<String, Object>> querySkusJsonBySpuId(Long spuId);
+    List<Map<String, Object>> querySkuJsonsBySpuId(@Param("skuIds") List<Long> skuIds);
 }

@@ -1,5 +1,6 @@
 package com.atguigu.gmall.item.feign;
 
+import com.atguigu.gmall.pms.api.GmallPmsApi;
 import org.springframework.cloud.openfeign.FeignClient;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.cloud.openfeign.FeignClient;
  * @author Ice on 2021/3/23 in 18:27
  */
 @FeignClient("pms-service")
-public interface GmallPmsClient {
+public interface GmallPmsClient  extends GmallPmsApi {
 }

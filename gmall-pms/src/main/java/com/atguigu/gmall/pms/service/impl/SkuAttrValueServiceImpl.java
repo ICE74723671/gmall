@@ -1,10 +1,10 @@
 package com.atguigu.gmall.pms.service.impl;
 
-import com.alibaba.fastjson.JSON;
+import com.atguigu.gmall.pms.entity.SkuEntity;
+import com.atguigu.gmall.pms.mapper.SkuMapper;
 import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
 import com.atguigu.gmall.sms.vo.AttrValueVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.pms.mapper.SkuAttrValueMapper;
 import com.atguigu.gmall.pms.entity.SkuAttrValueEntity;
 import com.atguigu.gmall.pms.service.SkuAttrValueService;
-import sun.plugin.javascript.navig.LinkArray;
+import org.springframework.util.CollectionUtils;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -32,6 +32,9 @@ public class SkuAttrValueServiceImpl extends ServiceImpl<SkuAttrValueMapper, Sku
 
     @Autowired
     SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    SkuMapper skuMapper;
 
     @Override
     public PageResultVo queryPage(PageParamVo paramVo) {
@@ -70,9 +73,22 @@ public class SkuAttrValueServiceImpl extends ServiceImpl<SkuAttrValueMapper, Sku
     }
 
     @Override
-    public String querySkusJsonBySpuId(Long spuId) {
-        List<Map<String, Object>> skus = skuAttrValueMapper.querySkusJsonBySpuId(spuId);
-        Map<String, Long> map = skus.stream().collect(Collectors.toMap(sku -> sku.get("attr_values").toString(), sku -> (Long) sku.get("sku_id")));
-        return JSON.toJSONString(map);
+    public Map<String, Object> querySkuJsonsBySpuId(Long spuId) {
+        List<Long> skuIds = getSkuIdsBySpuId(spuId);
+        if (CollectionUtils.isEmpty(skuIds)) return null;
+        List<Map<String, Object>> maps = baseMapper.querySkuJsonsBySpuId(skuIds);
+        return maps.stream().collect(Collectors.toMap(map -> map.get("attrValues").toString(), map -> map.get("sku_id")));
+    }
+
+    private List<Long> getSkuIdsBySpuId(Long spuId) {
+        //查询spu下的sku集合
+        List<SkuEntity> skuEntityList = skuMapper.selectList(new QueryWrapper<SkuEntity>().eq("spu_id", spuId));
+        if (CollectionUtils.isEmpty(skuEntityList)) {
+            return null;
+        }
+
+        //获取skuId集合
+        List<Long> skuIds = skuEntityList.stream().map(SkuEntity::getId).collect(Collectors.toList());
+        return skuIds;
     }
 }

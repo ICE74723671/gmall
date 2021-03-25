@@ -2,6 +2,7 @@ package com.atguigu.gmall.pms.controller;
 
 import java.awt.geom.RectangularShape;
 import java.util.List;
+import java.util.Map;
 
 import com.atguigu.gmall.pms.vo.SaleAttrValueVo;
 import com.baomidou.mybatisplus.extension.api.R;
@@ -44,9 +45,9 @@ public class SkuAttrValueController {
      * @return
      */
     @GetMapping("spu/sku/{spuId}")
-    public ResponseVo<String> querySkusJsonBySpuId(@PathVariable("spuId") Long spuId) {
-        String skusJson = skuAttrValueService.querySkusJsonBySpuId(spuId);
-        return ResponseVo.ok(skusJson);
+    public ResponseVo<Map<String, Object>> querySkuJsonsBySpuId(@PathVariable("spuId") Long spuId) {
+        Map<String, Object> skuJsons = skuAttrValueService.querySkuJsonsBySpuId(spuId);
+        return ResponseVo.ok(skuJsons);
     }
 
     /**

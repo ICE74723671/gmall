@@ -74,29 +74,28 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
     @Override
     public List<ItemGroupVo> queryGroupsBySpuIdAndCid(Long spuId, Long skuId, Long cid) {
 
-        //根据cid进行分组
-        List<AttrGroupEntity> attrGroupEntityList = baseMapper.selectList(new QueryWrapper<AttrGroupEntity>().eq("category_id", cid));
+        // 1.根据cid查询分组
+        List<AttrGroupEntity> attrGroupEntities = this.list(new QueryWrapper<AttrGroupEntity>().eq("category_id", cid));
 
-        if (CollectionUtils.isEmpty(attrGroupEntityList)) {
+        if (CollectionUtils.isEmpty(attrGroupEntities)) {
             return null;
         }
 
-        //遍历分组查询每个组的attr
-        return attrGroupEntityList.stream().map(group -> {
+        // 2.遍历分组查询每个组下的attr
+        return attrGroupEntities.stream().map(group -> {
             ItemGroupVo itemGroupVo = new ItemGroupVo();
-            itemGroupVo.setGroupName(group.getName());
             itemGroupVo.setGroupId(group.getId());
+            itemGroupVo.setGroupName(group.getName());
 
-            List<AttrEntity> attrEntityList = attrMapper.selectList(new QueryWrapper<AttrEntity>().eq("group_id", group.getId()));
-            if (!CollectionUtils.isEmpty(attrEntityList)) {
-                List<Long> attrIds = attrEntityList.stream().map(AttrEntity::getId).collect(Collectors.toList());
-                //attrId结合spuId查询规格参数
-                List<SpuAttrValueEntity> spuAttrValueEntities = spuAttrValueMapper.selectList(new QueryWrapper<SpuAttrValueEntity>().in("attr_id", attrIds));
-                //attrId结合skuId查询规格参数
-                List<SkuAttrValueEntity> skuAttrValueEntities = skuAttrValueMapper.selectList(new QueryWrapper<SkuAttrValueEntity>().in("attr_id", attrIds));
+            List<AttrEntity> attrEntities = this.attrMapper.selectList(new QueryWrapper<AttrEntity>().eq("group_id", group.getId()));
+            if (!CollectionUtils.isEmpty(attrEntities)) {
+                List<Long> attrIds = attrEntities.stream().map(AttrEntity::getId).collect(Collectors.toList());
+                // 3.attrId结合spuId查询规格参数对应值
+                List<SpuAttrValueEntity> spuAttrValueEntities = this.spuAttrValueMapper.selectList(new QueryWrapper<SpuAttrValueEntity>().eq("spu_id", spuId).in("attr_id", attrIds));
+                // 4.attrId结合skuId查询规格参数对应值
+                List<SkuAttrValueEntity> skuAttrValueEntities = this.skuAttrValueMapper.selectList(new QueryWrapper<SkuAttrValueEntity>().eq("sku_id", skuId).in("attr_id", attrIds));
 
                 List<AttrValueVo> attrValueVos = new ArrayList<>();
-
                 if (!CollectionUtils.isEmpty(spuAttrValueEntities)) {
                     List<AttrValueVo> spuAttrValueVos = spuAttrValueEntities.stream().map(attrValue -> {
                         AttrValueVo attrValueVo = new AttrValueVo();
@@ -105,7 +104,6 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
                     }).collect(Collectors.toList());
                     attrValueVos.addAll(spuAttrValueVos);
                 }
-
                 if (!CollectionUtils.isEmpty(skuAttrValueEntities)) {
                     List<AttrValueVo> skuAttrValueVos = skuAttrValueEntities.stream().map(attrValue -> {
                         AttrValueVo attrValueVo = new AttrValueVo();
@@ -120,5 +118,4 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupMapper, AttrGroup
             return itemGroupVo;
         }).collect(Collectors.toList());
     }
-
 }

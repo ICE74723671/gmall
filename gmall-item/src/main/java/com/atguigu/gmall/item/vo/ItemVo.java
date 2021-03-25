@@ -59,7 +59,7 @@ public class ItemVo {
 
     //sku列表
     //{'白色,8G,128G': 4, '白色,8G,256G': 5, '白色,8G,512G': 6, '白色,12G,128G': 7}
-    private String skusJson;
+    private Map<String, Object> skuJsons;
 
     //spu的海报信息
     private List<String> spuImages;

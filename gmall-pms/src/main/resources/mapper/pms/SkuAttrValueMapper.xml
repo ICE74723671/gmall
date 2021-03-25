@@ -12,15 +12,15 @@
             b.spu_id = #{spuId}
     </select>
 
-    <select id="querySkusJsonBySpuId" resultType="hashmap">
-        SELECT
-            GROUP_CONCAT(a.attr_value) AS attr_values,a.sku_id
-        FROM
-            pms_sku_attr_value a
-        INNER JOIN pms_sku b ON a.sku_id = b.id
-        WHERE
-            b.spu_id = #{spuId}
-        GROUP BY
-            a.sku_id
+    <select id="querySkuJsonsBySpuId" resultType="java.util.Map">
+        select sku_id, GROUP_CONCAT(attr_value ORDER BY attr_id asc ) as attrValues
+        from pms_sku_attr_value
+        <trim prefix="where" prefixOverrides="and|or" suffix="GROUP BY sku_id" suffixOverrides=",">
+            and sku_id in
+            <foreach collection="skuIds" item="skuId" separator="," open="(" close=")">
+                #{skuId}
+            </foreach>
+             ,
+        </trim>
     </select>
 </mapper>

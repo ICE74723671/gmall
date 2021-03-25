@@ -22,3 +22,10 @@ spring:
       probability: 1
   redis:
     host: 192.168.198.128
+  thymeleaf:
+    cache: false
+threadPool:
+  coreSize: 100
+  maxSize: 500
+  keepAliveTime: 60
+  blockQueueSize: 5000
