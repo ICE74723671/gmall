@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.pms.mapper.CategoryMapper">
+
+    <resultMap id="categoryMap" type="CategoryEntity" autoMapping="true">
+        <id column="id" property="id" />
+        <!--
+            association：一对一查询
+            collection：一对多查询
+                property-集合字段的属性名
+                javaType-集合的类型
+                ofType-集合中的泛型
+                select-关联查询的statementId
+                column-给关联查询传递参数
+        -->
+        <collection property="subs" javaType="List" ofType="CategoryEntity" select="queryLvl2CatesWithSubsByPid" column="id" >
+        </collection>
+    </resultMap>
+
+    <!--
+        resultType：单表的结果集映射
+        resultMap：自动义结果集的封装
+    -->
+    <select id="queryLvl2CatesWithSubsByPid" resultMap="categoryMap">
+        select * from pms_category where parent_id=#{pid}
+    </select>
+</mapper>

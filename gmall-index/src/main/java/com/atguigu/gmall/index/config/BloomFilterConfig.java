@@ -28,7 +28,7 @@ public class BloomFilterConfig {
 
         RBloomFilter<Object> bloomFilter = this.redissonClient.getBloomFilter("index:bloom");
         bloomFilter.tryInit(1000l, 0.03);
-        ResponseVo<List<CategoryEntity>> catesResponseVo = this.pmsClient.queryCategoriesById(0l);
+        ResponseVo<List<CategoryEntity>> catesResponseVo = this.pmsClient.queryCategoriesByPid(0l);
         List<CategoryEntity> categoryEntities = catesResponseVo.getData();
         if (!CollectionUtils.isEmpty(categoryEntities)){
             categoryEntities.forEach(categoryEntity -> {

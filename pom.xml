@@ -20,8 +20,8 @@
         <module>gmall-admin</module>
         <module>gmall-common</module>
         <module>gmall-sms-interface</module>
-        <module>gmall-pms-intreface</module>
-        <module>gmall-wms-intreface</module>
+        <module>gmall-pms-interface</module>
+        <module>gmall-wms-interface</module>
     </modules>
 
     <properties>

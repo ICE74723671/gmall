@@ -51,13 +51,13 @@ public class IndexService {
     private static final String LOCK_PREFIX = "index:cates:lock:";
 
     public List<CategoryEntity> queryLvl1Categories() {
-        ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryCategoriesById(0l);
+        ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryCategoriesByPid(0l);
         return listResponseVo.getData();
     }
 
     @GmallCache(prefix = KEY_PREFIX, timeout = 259200, random = 7000, lock = LOCK_PREFIX)
     public List<CategoryEntity> queryLvl2WithSubsByPid(Long pid) {
-        ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryCategoriesWithSub(pid);
+        ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryLvl2CatesWithSubsByPid(pid);
         List<CategoryEntity> categoryEntities = listResponseVo.getData();
 
         return categoryEntities;
@@ -81,7 +81,7 @@ public class IndexService {
             }
 
             // 2.远程调用或者查询数据库，放入缓存
-            ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryCategoriesWithSub(pid);
+            ResponseVo<List<CategoryEntity>> listResponseVo = this.pmsClient.queryLvl2CatesWithSubsByPid(pid);
             List<CategoryEntity> categoryEntities = listResponseVo.getData();
 
             if (CollectionUtils.isEmpty(categoryEntities)) {

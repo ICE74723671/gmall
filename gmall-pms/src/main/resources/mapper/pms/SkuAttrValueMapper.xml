@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.pms.mapper.SkuAttrValueMapper">
+
+    <select id="querySaleAttrsMappingSkuIdBySkuIds" resultType="java.util.Map">
+        select sku_id, GROUP_CONCAT(attr_value ORDER BY attr_id asc) as attrValues
+        from pms_sku_attr_value
+        /* 动态sql：
+            if：判断 test-判断条件
+            choose when otherwise：选择，选择条件在when标签的test属性中，一旦有一个when成立 后续不在执行，所有的when都不成立走otherwise
+            where：添加where关键字，自动去掉动态sql语句块之前多余的一个and
+            set：添加set关键字，自动去掉动态sql语句块最后多余的一个逗号
+            trim：
+            foreach：接受并遍历集合数据
+         */
+         <trim prefix="where" prefixOverrides="and|or" suffix="GROUP BY sku_id" suffixOverrides=",">
+             and sku_id in
+             <foreach collection="skuIds" item="skuId" separator="," open="(" close=")">
+                 #{skuId}
+             </foreach>
+             ,
+         </trim>
+
+    </select>
+</mapper>

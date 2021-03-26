@@ -1,0 +1,40 @@
+server:
+  port: 8150 # 服务端口
+
+spring:
+  profiles:
+    active: dev # 环境设置
+  application:
+    name: service-sms # 服务名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # nacos服务地址
+  rabbitmq:
+    host: 192.168.198.128
+    port: 5672
+    virtual-host: /123
+    username: 123
+    password: 123
+    publisher-confirm-type: correlated #异步确认
+    publisher-returns: true #确认消息是否到达队列
+  #spring:
+  redis:
+    host: 192.168.198.128
+    port: 6379
+    database: 0
+    # password: 123456 #默认为空
+    lettuce:
+      pool:
+        max-active: 20  #最大连接数，负值表示没有限制，默认8
+        max-wait: -1    #最大阻塞等待时间，负值表示没限制，默认-1
+        max-idle: 8     #最大空闲连接，默认8
+        min-idle: 0     #最小空闲连接，默认0
+#短信
+aliyun:
+  sms:
+    host: "http://dingxin.market.alicloudapi.com"
+    path: "/dx/sendSms"
+    method: "POST"
+    appcode: "b46ee2a31bc346af92c962cd6864dc86"
+    codeTemplate: 'TP1711063'
