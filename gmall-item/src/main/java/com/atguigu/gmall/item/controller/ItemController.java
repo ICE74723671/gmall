@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @Controller
 public class ItemController {
@@ -15,9 +16,11 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping("{skuId}.html")
-    public String loadData(@PathVariable("skuId")Long skuId, Model model) throws Exception {
+    public String loadData(@PathVariable("skuId") Long skuId, Model model) throws Exception {
+//        System.out.println("成功！！！ userId = " + userId + "===============!!!!!");
         ItemVo itemVo = this.itemService.loadData(skuId);
         model.addAttribute("itemVo", itemVo);
+        itemService.createHtml(itemVo);
         return "item";
     }
 }

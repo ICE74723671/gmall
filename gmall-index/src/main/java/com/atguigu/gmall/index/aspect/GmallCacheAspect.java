@@ -40,11 +40,6 @@ public class GmallCacheAspect {
      * 获取目标方法签名：(MethodSignature)joinPoint.getSignature()
      * @param joinPoint
      */
-    //@Before("execution(* com.atguigu.gmall.index.service.*.*(..))")
-    //@AfterReturning(value = "execution(* com.atguigu.gmall.index.service.*.*(..))", returning = "result")
-    //@AfterThrowing(value = "execution(* com.atguigu.gmall.index.service.*.*(..))", throwing = "ex")
-    //@After(value = "execution(* com.atguigu.gmall.index.service.*.*(..))")
-    //@Around("execution(* com.atguigu.gmall.index.service.*.*(..))")
     @Around("@annotation(GmallCache)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable{
 

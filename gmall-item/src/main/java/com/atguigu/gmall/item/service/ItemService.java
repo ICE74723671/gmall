@@ -12,6 +12,7 @@ import com.atguigu.gmall.sms.vo.ItemSaleVo;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.IRObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -161,6 +162,19 @@ public class ItemService {
         }).join();
 
         return itemVo;
+    }
+
+    public void createHtml(ItemVo itemVo) {
+        threadPoolExecutor.execute(() -> {
+            try (PrintWriter writer = new PrintWriter("E:\\gmall\\gmallHtml\\" + itemVo.getSkuId() + ".html")) {
+                //上下文对象
+                Context context = new Context();
+                context.setVariable("itemVo", itemVo);
+                templateEngine.process("item", context, writer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
 

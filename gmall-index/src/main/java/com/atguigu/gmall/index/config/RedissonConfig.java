@@ -13,7 +13,7 @@ public class RedissonConfig {
     public RedissonClient redissonClient(){
 
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://172.16.116.100:6379");
+        config.useSingleServer().setAddress("redis://192.168.198.128:6379");
         return Redisson.create(config);
     }
 }
