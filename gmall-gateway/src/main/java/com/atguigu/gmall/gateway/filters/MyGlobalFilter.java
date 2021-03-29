@@ -11,7 +11,7 @@ public class MyGlobalFilter implements GlobalFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        System.out.println("这是全局过滤器，无差别的拦截所有经过网关的请求！！");
+//        System.out.println("这是全局过滤器，无差别的拦截所有经过网关的请求！！");
         // 放行
         return chain.filter(exchange);
     }
