@@ -5,13 +5,10 @@ import com.atguigu.gmall.cart.pojo.Cart;
 import com.atguigu.gmall.cart.pojo.UserInfo;
 import com.atguigu.gmall.cart.service.CartService;
 import com.atguigu.gmall.common.bean.ResponseVo;
-import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import sun.awt.windows.ThemeReader;
 
 import java.util.List;
 
@@ -25,6 +22,13 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+
+    @GetMapping("check/{userId}")
+    @ResponseBody
+    public ResponseVo<List<Cart>> queryCheckedCarts(@PathVariable("userId") Long userId) {
+        List<Cart> carts = cartService.queryCheckedCarts(userId);
+        return ResponseVo.ok(carts);
+    }
 
     @PostMapping("deleteCart")
     @ResponseBody

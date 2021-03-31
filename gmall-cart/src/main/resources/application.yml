@@ -24,8 +24,30 @@ spring:
     url: jdbc:mysql://192.168.198.128:3306/guli_cart
     username: root
     password: root
+  task:
+    execution:
+      thread-name-prefix: cart-task-
+      pool:
+        core-size: 100
+        max-size: 500
+        keep-alive: 60s
+        queue-capacity: 5000
+        allow-core-thread-timeout: false
+      shutdown:
+        await-termination: true
+        await-termination-period: 60
   thymeleaf:
     cache: false
+  rabbitmq:
+    virtual-host: /123
+    username: 123
+    password: 123
+    host: 192.168.198.128
+    listener:
+      simple:
+        prefetch: 1
+        acknowledge-mode: manual
+        concurrency: 4
 feign:
   sentinel:
     enabled: true

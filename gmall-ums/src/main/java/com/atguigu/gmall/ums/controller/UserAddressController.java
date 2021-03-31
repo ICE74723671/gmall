@@ -34,12 +34,19 @@ public class UserAddressController {
     @Autowired
     private UserAddressService userAddressService;
 
+    @GetMapping("user/{userId}")
+    @ApiOperation("查询某一用户的所有收货地址")
+    public ResponseVo<List<UserAddressEntity>> queryAddressesByUserId(@PathVariable("userId") Long userId) {
+        List<UserAddressEntity> userAddressEntities = userAddressService.queryAddressesByUserId(userId);
+        return ResponseVo.ok(userAddressEntities);
+    }
+
     /**
      * 列表
      */
     @GetMapping
     @ApiOperation("分页查询")
-    public ResponseVo<PageResultVo> queryUserAddressByPage(PageParamVo paramVo){
+    public ResponseVo<PageResultVo> queryUserAddressByPage(PageParamVo paramVo) {
         PageResultVo pageResultVo = userAddressService.queryPage(paramVo);
 
         return ResponseVo.ok(pageResultVo);
@@ -51,8 +58,8 @@ public class UserAddressController {
      */
     @GetMapping("{id}")
     @ApiOperation("详情查询")
-    public ResponseVo<UserAddressEntity> queryUserAddressById(@PathVariable("id") Long id){
-		UserAddressEntity userAddress = userAddressService.getById(id);
+    public ResponseVo<UserAddressEntity> queryUserAddressById(@PathVariable("id") Long id) {
+        UserAddressEntity userAddress = userAddressService.getById(id);
 
         return ResponseVo.ok(userAddress);
     }
@@ -62,8 +69,8 @@ public class UserAddressController {
      */
     @PostMapping
     @ApiOperation("保存")
-    public ResponseVo<Object> save(@RequestBody UserAddressEntity userAddress){
-		userAddressService.save(userAddress);
+    public ResponseVo<Object> save(@RequestBody UserAddressEntity userAddress) {
+        userAddressService.save(userAddress);
 
         return ResponseVo.ok();
     }
@@ -73,8 +80,8 @@ public class UserAddressController {
      */
     @PostMapping("/update")
     @ApiOperation("修改")
-    public ResponseVo update(@RequestBody UserAddressEntity userAddress){
-		userAddressService.updateById(userAddress);
+    public ResponseVo update(@RequestBody UserAddressEntity userAddress) {
+        userAddressService.updateById(userAddress);
 
         return ResponseVo.ok();
     }
@@ -84,8 +91,8 @@ public class UserAddressController {
      */
     @PostMapping("/delete")
     @ApiOperation("删除")
-    public ResponseVo delete(@RequestBody List<Long> ids){
-		userAddressService.removeByIds(ids);
+    public ResponseVo delete(@RequestBody List<Long> ids) {
+        userAddressService.removeByIds(ids);
 
         return ResponseVo.ok();
     }

@@ -4,7 +4,6 @@ import com.atguigu.gmall.cart.mapper.CartMapper;
 import com.atguigu.gmall.cart.pojo.Cart;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -22,11 +21,12 @@ public class CartAsyncService {
 
     @Async
     public void updateCart(String userId, Long skuId, Cart cart) {
+//        int i = 1 / 0;
         cartMapper.update(cart, new QueryWrapper<Cart>().eq("user_id", userId).eq("sku_id", skuId));
     }
 
     @Async
-    public void insertCart(Cart cart) {
+    public void insertCart(String userId,Cart cart) {
         cartMapper.insert(cart);
     }
 

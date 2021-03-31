@@ -5,28 +5,19 @@ import com.atguigu.gmall.cart.feign.GmallPmsClient;
 import com.atguigu.gmall.cart.feign.GmallSmsClient;
 import com.atguigu.gmall.cart.feign.GmallWmsClient;
 import com.atguigu.gmall.cart.interceptor.LoginInterceptor;
-import com.atguigu.gmall.cart.mapper.CartMapper;
 import com.atguigu.gmall.cart.pojo.Cart;
 import com.atguigu.gmall.cart.pojo.UserInfo;
 import com.atguigu.gmall.common.bean.ResponseVo;
 import com.atguigu.gmall.common.exception.CartException;
-import com.atguigu.gmall.pms.api.GmallPmsApi;
 import com.atguigu.gmall.pms.entity.SkuAttrValueEntity;
 import com.atguigu.gmall.pms.entity.SkuEntity;
 import com.atguigu.gmall.sms.vo.ItemSaleVo;
-import com.atguigu.gmall.wms.api.GmallWmsApi;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import springfox.documentation.spring.web.json.Json;
-import sun.awt.geom.AreaOp;
-import sun.nio.cs.US_ASCII;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -107,7 +98,7 @@ public class CartService {
             cart.setSaleAttrs(JSON.toJSONString(skuAttrValueEntities));
 
             //新增到Mysql和redis
-            cartAsyncService.insertCart(cart);
+            cartAsyncService.insertCart(userId, cart);
         }
         //无论更新还是新增购物车，redis都是一样的操作
         hashOps.put(skuIdString, JSON.toJSONString(cart));
@@ -175,7 +166,7 @@ public class CartService {
                 } else {
                     //不包含，新增一条
                     cart.setUserId(userId.toString());
-                    cartAsyncService.insertCart(cart);
+                    cartAsyncService.insertCart(userId.toString(), cart);
                 }
                 loginHashOps.put(skuIdString, JSON.toJSONString(cart));
             });
@@ -231,5 +222,16 @@ public class CartService {
         BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(KEY_PREFIX + userId);
         hashOps.delete(skuId.toString());
         cartAsyncService.deleteCartByUserIdAndSkuId(userId, skuId);
+    }
+
+    public List<Cart> queryCheckedCarts(Long userId) {
+        BoundHashOperations<String, Object, Object> hashOps = redisTemplate.boundHashOps(KEY_PREFIX + userId);
+        List<Object> cartsJson = hashOps.values();
+        if (CollectionUtils.isEmpty(cartsJson)) {
+            return null;
+        }
+        return cartsJson.stream().map(cart ->
+                JSON.parseObject(cart.toString(), Cart.class)
+        ).filter(Cart::getCheck).collect(Collectors.toList());
     }
 }

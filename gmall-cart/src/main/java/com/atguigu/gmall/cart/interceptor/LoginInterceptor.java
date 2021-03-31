@@ -4,14 +4,11 @@ import com.atguigu.gmall.cart.config.JwtProperties;
 import com.atguigu.gmall.cart.pojo.UserInfo;
 import com.atguigu.gmall.common.utils.CookieUtils;
 import com.atguigu.gmall.common.utils.JwtUtils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import lombok.experimental.Accessors;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import sun.nio.cs.US_ASCII;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
