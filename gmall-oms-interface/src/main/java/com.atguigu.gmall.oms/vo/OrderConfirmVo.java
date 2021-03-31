@@ -1,10 +1,9 @@
-package com.atguigu.gmall.order.vo;
+package com.atguigu.gmall.oms.vo;
 
 import com.atguigu.gmall.ums.entity.UserAddressEntity;
 import lombok.Data;
 
 import java.util.List;
-import java.util.spi.LocaleServiceProvider;
 
 /**
  * description:

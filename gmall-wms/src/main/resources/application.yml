@@ -32,4 +32,3 @@ spring:
       probability: 1
   redis:
     host: 192.168.198.128
-    port: 6379

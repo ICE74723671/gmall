@@ -11,7 +11,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @MapperScan("com.atguigu.gmall.wms.mapper")
 @EnableFeignClients
 @EnableSwagger2
-@RefreshScope
 public class GmallWmsApplication {
 
     public static void main(String[] args) {

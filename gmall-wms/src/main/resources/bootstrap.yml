@@ -3,8 +3,5 @@ spring:
     nacos:
       config:
         server-addr: localhost:8848
-        namespace: 30d85966-e9fd-4cfd-ac82-19e1a02b761b
-        file-extension: yml
-        group: dev
   application:
     name: wms-service

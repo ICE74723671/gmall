@@ -6,8 +6,8 @@ import com.atguigu.gmall.common.exception.CartException;
 import com.atguigu.gmall.order.feign.*;
 import com.atguigu.gmall.order.interceptor.LoginInterceptor;
 import com.atguigu.gmall.order.pojo.UserInfo;
-import com.atguigu.gmall.order.vo.OrderConfirmVo;
-import com.atguigu.gmall.order.vo.OrderItemVo;
+import com.atguigu.gmall.oms.vo.OrderConfirmVo;
+import com.atguigu.gmall.oms.vo.OrderItemVo;
 import com.atguigu.gmall.pms.entity.SkuAttrValueEntity;
 import com.atguigu.gmall.pms.entity.SkuEntity;
 import com.atguigu.gmall.sms.vo.ItemSaleVo;
@@ -15,17 +15,13 @@ import com.atguigu.gmall.ums.entity.UserAddressEntity;
 import com.atguigu.gmall.ums.entity.UserEntity;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import sun.awt.windows.ThemeReader;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -121,6 +117,7 @@ public class OrderService {
         //防重
         String orderToken = IdWorker.getIdStr();
         confirmVo.setOrderToken(orderToken);
+        redisTemplate.opsForValue().set(KEY_PREFIX+orderToken, orderToken,1, TimeUnit.HOURS);
 
         return confirmVo;
     }
