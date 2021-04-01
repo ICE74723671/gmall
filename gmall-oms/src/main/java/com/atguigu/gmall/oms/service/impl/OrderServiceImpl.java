@@ -94,6 +94,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
 
         orderEntity.setDeleteStatus(0);
         orderEntity.setUseIntegration(submitVo.getBounds());
+        this.save(orderEntity);
 
         //保存订单详情
         List<OrderItemVo> items = submitVo.getItems();
@@ -113,11 +114,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderEntity> impl
                     itemEntity.setSkuQuantity(orderItemVo.getCount().intValue());
 
                     //spu相关信息
-                    ResponseVo<SpuEntity> spuEntityResponseVo = pmsClient.querySpuById(skuEntity.getId());
+                    ResponseVo<SpuEntity> spuEntityResponseVo = pmsClient.querySpuById(skuEntity.getSpuId());
                     SpuEntity spuEntity = spuEntityResponseVo.getData();
                     if (spuEntity != null) {
                         itemEntity.setSpuId(spuEntity.getId());
                         itemEntity.setSpuName(spuEntity.getName());
+                        itemEntity.setCategoryId(spuEntity.getCategoryId());
                     }
 
                     //spu描述信息
