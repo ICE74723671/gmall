@@ -32,3 +32,13 @@ spring:
       probability: 1
   redis:
     host: 192.168.198.128
+  rabbitmq:
+    virtual-host: /123
+    username: 123
+    password: 123
+    host: 192.168.198.128
+    listener:
+      simple:
+        prefetch: 1
+        acknowledge-mode: manual
+        concurrency: 4

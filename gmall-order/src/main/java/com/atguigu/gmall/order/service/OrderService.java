@@ -196,6 +196,7 @@ public class OrderService {
             omsClient.saveOrder(orderSubmitVo, userId);
         } catch (Exception e) {
             e.printStackTrace();
+            rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.failure",orderToken);
             throw new OrderException("服务器错误.....");
         }
 
