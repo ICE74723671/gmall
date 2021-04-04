@@ -2,11 +2,12 @@ package com.atguigu.gmall.oms.mapper;
 
 import com.atguigu.gmall.oms.entity.OrderEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 订单
- * 
+ *
  * @author fengge
  * @email fengge@atguigu.com
  * @date 2021-03-31 20:17:17
@@ -14,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OrderMapper extends BaseMapper<OrderEntity> {
 
-    void updateStatus(String orderToken, Integer except, Integer target);
+    Integer updateStatus(String orderToken, Integer except, Integer target);
 }

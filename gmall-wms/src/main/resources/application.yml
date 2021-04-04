@@ -42,3 +42,5 @@ spring:
         prefetch: 1
         acknowledge-mode: manual
         concurrency: 4
+    publisher-confirm-type: correlated
+    publisher-returns: true

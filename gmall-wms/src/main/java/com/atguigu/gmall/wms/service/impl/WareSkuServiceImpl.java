@@ -5,6 +5,7 @@ import com.atguigu.gmall.common.exception.OrderException;
 import com.atguigu.gmall.wms.vo.SkuLockVo;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.atguigu.gmall.common.bean.PageParamVo;
 import com.atguigu.gmall.wms.mapper.WareSkuMapper;
 import com.atguigu.gmall.wms.entity.WareSkuEntity;
 import com.atguigu.gmall.wms.service.WareSkuService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 
@@ -35,6 +37,9 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private static final String LOCK_PREFIX = "stock:lock:";
 
@@ -55,6 +60,7 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         return this.list(new QueryWrapper<WareSkuEntity>().eq("sku_id", skuId));
     }
 
+    @Transactional
     @Override
     public List<SkuLockVo> checkAndLock(List<SkuLockVo> lockVos, String orderToken) {
         if (CollectionUtils.isEmpty(lockVos)) {
@@ -77,6 +83,8 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuMapper, WareSkuEntity
         //把锁定信息缓存到redis,方便未来支付成功时减库存，超时未支付解锁库存
         redisTemplate.opsForValue().set(KEY_PREFIX + orderToken, JSON.toJSONString(lockVos));
 
+        //锁库存之后，返回之前发送消息定时解库存
+        rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "stock.ttl", orderToken);
         return null;
     }
 

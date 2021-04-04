@@ -3,6 +3,8 @@ package com.atguigu.gmall.oms.controller;
 import java.util.List;
 
 import com.atguigu.gmall.oms.vo.OrderSubmitVo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.api.R;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +37,14 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @GetMapping("token/{orderSn}")
+    public ResponseVo<OrderEntity> queryOrderByOrderSn(@PathVariable("orderSn") String orderSn) {
+        return ResponseVo.ok(orderService.getOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn)));
+    }
+
     @PostMapping("save/{userId}")
-    public ResponseVo<OrderEntity> saveOrder(@RequestBody OrderSubmitVo submitVo,@PathVariable("userId")Long userId) {
-        OrderEntity orderEntity = orderService.saveOrder(submitVo,userId);
+    public ResponseVo<OrderEntity> saveOrder(@RequestBody OrderSubmitVo submitVo, @PathVariable("userId") Long userId) {
+        OrderEntity orderEntity = orderService.saveOrder(submitVo, userId);
         return ResponseVo.ok(orderEntity);
     }
 

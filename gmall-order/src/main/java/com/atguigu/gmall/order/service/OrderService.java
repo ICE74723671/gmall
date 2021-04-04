@@ -194,9 +194,11 @@ public class OrderService {
         Long userId = userInfo.getUserId();
         try {
             omsClient.saveOrder(orderSubmitVo, userId);
+            //下单未支付，定时关单
+            rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.ttl", orderToken);
         } catch (Exception e) {
             e.printStackTrace();
-            rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.failure",orderToken);
+            rabbitTemplate.convertAndSend("ORDER_EXCHANGE", "order.failure", orderToken);
             throw new OrderException("服务器错误.....");
         }
 
